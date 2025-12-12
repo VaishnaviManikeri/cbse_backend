@@ -1,39 +1,55 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 const router = express.Router();
 
-// Login
-router.post('/login', async (req, res) => {
+/* --------------------------------------------------
+   🔥 TEST ROUTE (Fix for Cannot GET /api/auth/test)
+----------------------------------------------------*/
+router.get("/test", (req, res) => {
+  res.json({ message: "Auth route working 🚀" });
+});
+
+/* --------------------------------------------------
+   🔐 LOGIN ROUTE
+----------------------------------------------------*/
+router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
+    // FIX: ensure your User model has comparePassword method
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: "24h" }
     );
 
-    res.json({ token, user: { username: user.username, role: user.role } });
+    res.json({
+      token,
+      user: { username: user.username, role: user.role },
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
-// Check auth
-router.get('/verify', (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  
+/* --------------------------------------------------
+   🔍 VERIFY TOKEN
+----------------------------------------------------*/
+router.get("/verify", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
   if (!token) {
     return res.status(401).json({ valid: false });
   }
