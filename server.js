@@ -9,13 +9,13 @@ dotenv.config();
 const app = express();
 
 /* -----------------------------------------
-   ✅ SINGLE, CLEAN, CORRECT CORS CONFIG
-   ----------------------------------------- */
+   ✅ CLEAN & CORRECT CORS CONFIG
+----------------------------------------- */
 const allowedOrigins = [
-  process.env.CLIENT_ORIGIN,               // Hostinger frontend URL
-  "https://cbse-backend-2.onrender.com",   // Render backend URL
-  "http://localhost:5173",                 // React dev
-  "http://localhost:5174"                  // React dev
+  process.env.CLIENT_ORIGIN,               // Frontend URL (Hostinger)
+  "https://cbse-backend-2.onrender.com",   // Render backend
+  "http://localhost:5173",                 // Local React
+  "http://localhost:5174"
 ].filter(Boolean);
 
 app.use(
@@ -31,6 +31,8 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /* ----------------------- Database --------------------------- */
+console.log("🔍 Checking Mongo URI:", process.env.MONGO_URI); // Debug log
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
