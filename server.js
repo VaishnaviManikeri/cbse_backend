@@ -10,15 +10,18 @@ const app = express();
 
 /* ----------------------- CORS CONFIG ----------------------- */
 /* Works for:
-   ✔ Localhost (5173, 5174)
-   ✔ Render frontend URL (from .env)
-   ✔ Avoids CORS errors
+   ✔ Hostinger frontend (https://jadhavarcbse.com)
+   ✔ Render backend preflight
+   ✔ Localhost testing
 */
+
 const allowedOrigins = [
-  "https://jadhavarcbse.com",
-  "https://jadhavarcbse.com",
-  process.env.FRONTEND_URL   // <- your Render frontend URL
-].filter(Boolean); // remove undefined/null
+  "https://jadhavarcbse.com",               // Hostinger Frontend
+  process.env.FRONTEND_URL,                 // Read from .env
+  "YOUR_RENDER_BACKEND_URL",                // Your Render Backend URL
+  "http://localhost:5173",                  // Local React dev
+  "http://localhost:5174"                   // Local React dev
+].filter(Boolean);
 
 app.use(
   cors({
@@ -39,6 +42,10 @@ mongoose
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 /* ----------------------- Routes ----------------------------- */
+app.get("/", (req, res) => {
+  res.send("Backend is running...");
+});
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/announcements', require('./routes/announcements'));
