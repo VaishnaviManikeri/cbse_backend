@@ -15,8 +15,8 @@ const app = express();
    ✔ Avoids CORS errors
 */
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
+  "https://jadhavarcbse.com",
+  "https://jadhavarcbse.com",
   process.env.FRONTEND_URL   // <- your Render frontend URL
 ].filter(Boolean); // remove undefined/null
 
