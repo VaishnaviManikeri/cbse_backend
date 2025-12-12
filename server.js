@@ -8,19 +8,14 @@ dotenv.config();
 
 const app = express();
 
-/* ----------------------- CORS CONFIG ----------------------- */
-/* Works for:
-   ✔ Hostinger frontend (https://jadhavarcbse.com)
-   ✔ Render backend preflight
-   ✔ Localhost testing
-*/
-
+/* -----------------------------------------
+   ✅ SINGLE, CLEAN, CORRECT CORS CONFIG
+   ----------------------------------------- */
 const allowedOrigins = [
-  "https://jadhavarcbse.com",               // Hostinger Frontend
-  process.env.FRONTEND_URL,                 // Read from .env
-  "https://cbse-backend-2.onrender.com",                // Your Render Backend URL
-  "http://localhost:5173",                  // Local React dev
-  "http://localhost:5174"                   // Local React dev
+  process.env.CLIENT_ORIGIN,               // Hostinger frontend URL
+  "https://cbse-backend-2.onrender.com",   // Render backend URL
+  "http://localhost:5173",                 // React dev
+  "http://localhost:5174"                  // React dev
 ].filter(Boolean);
 
 app.use(
@@ -37,7 +32,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /* ----------------------- Database --------------------------- */
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
