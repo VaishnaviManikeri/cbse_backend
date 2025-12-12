@@ -18,7 +18,7 @@ const app = express();
 const allowedOrigins = [
   "https://jadhavarcbse.com",               // Hostinger Frontend
   process.env.FRONTEND_URL,                 // Read from .env
-  "YOUR_RENDER_BACKEND_URL",                // Your Render Backend URL
+  "https://cbse-backend-2.onrender.com",                // Your Render Backend URL
   "http://localhost:5173",                  // Local React dev
   "http://localhost:5174"                   // Local React dev
 ].filter(Boolean);
